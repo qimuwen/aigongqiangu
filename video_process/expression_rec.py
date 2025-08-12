@@ -2,9 +2,10 @@
 # pip install py-feat opencv-python
 from feat import Detector
 import numpy as np
-
+import os
 detector = Detector()  # 默认包含 AU/VA/情绪
-pred = detector.detect_image("path/to/image.jpg")  # 单张图；视频可用 detect_video
+
+pred = detector.detect_image("./files/frame_0000.jpg")  # 单张图；视频可用 detect_video
 
 # 1) AU 夸张度（简单平均，可换成加权）
 au_cols = [c for c in pred.columns if c.endswith("_r")]  # AUxx_r 为强度列

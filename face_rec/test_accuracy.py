@@ -6,7 +6,7 @@ from pathlib import Path
 import pickle
 
 TEST_PATH = "./images/test"
-MODEL_PATH = "./model/face_model.pkl"  # 模型保存路径
+MODEL_PATH = r"D:\13_pro\web\aigongqiangu\face_rec\model/face_model.pkl"  # 模型保存路径
 TEST_IMAGE = "./images/test/张维为_105.jpg"  # 替换为你的测试图片路径
 
 
@@ -49,22 +49,22 @@ def recognize_face(test_image_path, known_face_encodings, known_face_names):
         return known_face_names[min_distance_index], min_distance
     else:
         return "Unknown person", min_distance
+class DiscernFace:
+    def __init__(self):
+        self.known_face_encodings, self.known_face_names = load_model(MODEL_PATH)
+        if not self.known_face_encodings:
+            print("Failed to load model. Exiting.")
+            return
 
-
-def test():
-    print("Loading model...")
-    known_face_encodings, known_face_names = load_model(MODEL_PATH)
-
-    if not known_face_encodings:
-        print("Failed to load model. Exiting.")
-        return
-
-    print(f"Loaded model with {len(known_face_encodings)} known faces.")
-    for file in os.listdir(TEST_PATH):
-        # 识别测试图片中的人脸
-        result = recognize_face(f"{TEST_PATH}/{file}", known_face_encodings, known_face_names)
-        print(f"Recognition result: {file, result}")
+    def discern(self, file_path):
+        result = recognize_face(file_path, self.known_face_encodings, self.known_face_names)
+        return result
 
 
 if __name__ == "__main__":
-    test()
+    dis_obj = DiscernFace()
+
+    img_path = r"D:\13_pro\web\aigongqiangu\video_process\files"
+    for file in os.listdir(img_path):
+        path = img_path + "/" + file
+        print(dis_obj.discern(path))

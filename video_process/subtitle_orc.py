@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
-from PIL import Image
+from PIL import Image, ImageDraw
 
 # 添加 ANTIALIAS 兼容性处理
 Image.ANTIALIAS = Image.Resampling.LANCZOS
@@ -19,7 +19,7 @@ class SubtitleExtractor:
         self.ocr = ddddocr.DdddOcr()
 
         # 设置字幕区域裁剪范围
-        self.crop_box = (235, 900, 235 + 1200, 900 + 90)
+        self.crop_box = (150, 420, 700, 470)
 
         # 正则表达式模式
         self.pattern = r'\[([^]]+)\]([^_]+)_(\d+m\d+s)_sim_(\d+\.\d+)'
@@ -38,13 +38,14 @@ class SubtitleExtractor:
     def process_image(self, img_path):
         """处理单个图像并提取文字"""
         img = Image.open(img_path)
-
-        if img.size != (1920, 1080):
-            return None
+        # if img.size != (1920, 1080):
+        #     return None
 
         # 裁剪图像
         cropped_img = img.crop(self.crop_box)
-
+        # draw = ImageDraw.Draw(img)
+        # draw.rectangle(self.crop_box, fill=(255, 0, 0))
+        # img.show()
         # 图像预处理
         img_array = np.array(cropped_img)
         mask = np.all(img_array > 245, axis=2)
@@ -113,3 +114,6 @@ class SubtitleExtractor:
                 print(f"保存文件时出错: {str(e)}")
 
         print("\n处理完成")
+
+
+
