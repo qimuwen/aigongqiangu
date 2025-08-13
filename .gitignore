@@ -40,7 +40,8 @@
 *.rar
 *.tar.gz
 *.7z
-
+*.pyc
+.idea
 
 
 # Node.js / Python / 其他运行时文件
